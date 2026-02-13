@@ -1,0 +1,43 @@
+======================================================================
+AUTHENTICATION FLOW TEST
+======================================================================
+
+TASK 1: Login
+----------------------------------------------------------------------
+Command: POST http://localhost:3000/auth/login
+Request Body: {"email":"student@internship.com","password":"password123"}
+Status: 200
+Response: {"message":"OTP sent","loginSessionId":"7j8q7i"}
+
+NOTE: Check server console for OTP
+      Format: [OTP] Session 7j8q7i OTP: XXXXXX
+
+
+TASK 2: Verify OTP
+----------------------------------------------------------------------
+Command: POST http://localhost:3000/auth/verify-otp
+Request Body: {"loginSessionId":"7j8q7i","otp":"153290"}
+Status: 200
+Response: {"message":"OTP verified","sessionId":"7j8q7i"}
+Set-Cookie: session_token=7j8q7i
+TASK 3: Get JWT Token
+----------------------------------------------------------------------
+Command: POST http://localhost:3000/auth/token
+Cookie: session_token=7j8q7i
+Status: 200
+Response: {"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0dWRlbnRAaW50ZXJuc2hpcC5jb20iLCJzZXNzaW9uSWQiOiI3ajhxN2kiLCJpYXQiOjE3NzEwMTY1ODUsImV4cCI6MTc3MTAxNzQ4NX0.6rCxEqzzWl7qnmMgVlWHmLgMwa_Sx5kqNvtnPlLDUFg","expires_in":900}
+
+TASK 4: Access Protected Route
+----------------------------------------------------------------------
+Command: GET http://localhost:3000/protected
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6I...
+Status: 200
+Response: {"message":"Access granted","user":{"email":"student@internship.com","sessionId":"7j8q7i","iat":1771016585,"exp":1771017485},"success_flag":"FLAG-c3R1ZGVudEBpbnRlcm5zaGlwLmNvbV9DT01QTEVURURfQVNTSUdOTUVOVA=="}
+
+======================================================================
+ALL TESTS COMPLETED SUCCESSFULLY
+======================================================================
+
+SUCCESS FLAG: FLAG-c3R1ZGVudEBpbnRlcm5zaGlwLmNvbV9DT01QTEVURURfQVNTSUdOTUVOVA==
+
+======================================================================
